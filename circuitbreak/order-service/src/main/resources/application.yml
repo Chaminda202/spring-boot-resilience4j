@@ -14,8 +14,13 @@ resilience4j:
         minimumNumberOfCalls: 5
         permittedNumberOfCallsInHalfOpenState: 3
         slidingWindowSize: 10
-        waitDurationInOpenState: 10
+        waitDurationInOpenState: 10s
         slidingWindowType: COUNT_BASED
+        recordExceptions:
+          - org.springframework.web.client.HttpServerErrorException
+          - java.io.IOException
+          - java.util.concurrent.TimeoutException
+          - org.springframework.web.client.ResourceAccessException
 
 app:
   inventory-endpoint: http://localhost:9093/inventories

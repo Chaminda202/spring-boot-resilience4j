@@ -8,6 +8,8 @@ import com.circuitebreak.order.model.OrderResponse;
 import com.circuitebreak.order.service.OrderService;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -21,10 +23,11 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
+    static final Logger LOGGER = LoggerFactory.getLogger(OrderServiceImpl.class);
     private final RestTemplate restTemplate;
     private final ApplicationProperties applicationProperties;
 
-//    @CircuitBreaker(name = "inventoryBreak", fallbackMethod = "placeOrderFallback")
+    @CircuitBreaker(name = "inventoryBreak", fallbackMethod = "placeOrderFallback")
     @Override
     public OrderResponse placeOrder(OrderRequest orderRequest) {
         InventoryRequest request = InventoryRequest.builder()
@@ -51,7 +54,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private OrderResponse placeOrderFallback(OrderRequest orderRequest, Throwable throwable) {
-        System.out.println("Inside placeOrderFallback method");
+        LOGGER.info("Inside placeOrderFallback method, cause - {}", throwable.toString());
+//        System.out.println("Inside placeOrderFallback method");
         return OrderResponse.builder()
                 .productCode(orderRequest.getProductCode())
                 .productName(orderRequest.getProductName())
