@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: order-service
+server:
+  port: 9092
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      inventoryBreak:
+        registerHealthIndicator: true # added actuator dependency to pom.xml, should gives permission
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        failureRateThreshold: 50
+        minimumNumberOfCalls: 5
+        permittedNumberOfCallsInHalfOpenState: 3
+        slidingWindowSize: 10
+        waitDurationInOpenState: 10
+        slidingWindowType: COUNT_BASED
+
+app:
+  inventory-endpoint: http://localhost:9093/inventories
+
+management:
+  health:
+    circuitbreakers:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include:
+          - health
+  endpoint:
+    health:
+      show-details: ALWAYS
+
+
+
+
