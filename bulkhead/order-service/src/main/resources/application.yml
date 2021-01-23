@@ -1,0 +1,45 @@
+spring:
+  application:
+    name: order-service
+server:
+  port: 9092
+
+resilience4j:
+  #semaphore base bulkhead configuration
+#  bulkhead:
+#    instances:
+#      inventoryBulkhead:
+#        maxConcurrentCalls: 3
+#        maxWaitDuration: 10000
+#        eventConsumerBufferSize: 10
+
+  #Thread pool base bulkhead configuration
+  thread-pool-bulkhead:
+    instances:
+      inventoryBulkhead:
+        eventConsumerBufferSize: 10
+        coreThreadPoolSize: 3 #deafult active thread size
+        maxThreadPoolSize: 5 # maximum active thread size
+        queueCapacity: 8
+        keepAliveDuration: 10000
+
+
+app:
+  inventory-endpoint: http://localhost:9093/inventories
+
+management:
+  health:
+    circuitbreakers:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include:
+          - health
+  endpoint:
+    health:
+      show-details: ALWAYS
+
+
+
+
