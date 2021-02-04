@@ -6,7 +6,7 @@ import com.circuitebreak.order.model.InventoryResponse;
 import com.circuitebreak.order.model.OrderRequest;
 import com.circuitebreak.order.model.OrderResponse;
 import com.circuitebreak.order.service.OrderService;
-import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.bulkhead.annotation.Bulkhead;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -24,7 +24,7 @@ public class OrderServiceImpl implements OrderService {
     private final RestTemplate restTemplate;
     private final ApplicationProperties applicationProperties;
 
-//    @CircuitBreaker(name = "inventoryBreak", fallbackMethod = "placeOrderFallback")
+    @Bulkhead(name = "inventoryBulkhead", fallbackMethod = "placeOrderFallback")
     @Override
     public OrderResponse placeOrder(OrderRequest orderRequest) {
         InventoryRequest request = InventoryRequest.builder()

@@ -13,6 +13,11 @@ public class InventoryServiceImpl implements InventoryService {
     private static final BigDecimal DISCOUNT_PERCENTAGE =  new BigDecimal(.15);
     @Override
     public InventoryResponse checkInventory(InventoryRequest inventoryRequest) {
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return InventoryResponse.builder()
                 .productCode(inventoryRequest.getProductCode())
                 .productName(inventoryRequest.getProductName())

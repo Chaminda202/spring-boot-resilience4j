@@ -10,7 +10,7 @@ resilience4j:
 #    instances:
 #      inventoryBulkhead:
 #        maxConcurrentCalls: 3
-#        maxWaitDuration: 10000
+#        maxWaitDuration: 10000 # how much time should be waited before retry
 #        eventConsumerBufferSize: 10
 
   #Thread pool base bulkhead configuration
@@ -21,7 +21,7 @@ resilience4j:
         coreThreadPoolSize: 3 #deafult active thread size
         maxThreadPoolSize: 5 # maximum active thread size
         queueCapacity: 8
-        keepAliveDuration: 10000
+        keepAliveDuration: 10000 # extra thread will be removed automatically after this time
 
 
 app:

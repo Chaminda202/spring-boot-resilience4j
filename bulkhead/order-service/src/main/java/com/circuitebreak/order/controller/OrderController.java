@@ -20,7 +20,7 @@ import java.math.BigDecimal;
 public class OrderController {
     private final OrderService orderService;
 
-    @Bulkhead(name = "inventoryBulkhead", fallbackMethod = "placeOrderFallback")
+    // @Bulkhead(name = "inventoryBulkhead", fallbackMethod = "placeOrderFallback")
     @ApiOperation(value = "Order Service: Place the order")
     @PostMapping
     public ResponseEntity<OrderResponse> placeOrder(@RequestBody OrderRequest orderRequest) {

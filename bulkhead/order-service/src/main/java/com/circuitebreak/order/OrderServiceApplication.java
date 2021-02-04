@@ -22,7 +22,7 @@ public class OrderServiceApplication {
 				.productCode("P002")
 				.productName("Rose")
 				.build();
-		IntStream.rangeClosed(1, 10).parallel().forEach(i -> {
+		IntStream.rangeClosed(1, 20).parallel().forEach(i -> {
 			ResponseEntity<OrderResponse> responseEntity = new RestTemplate()
 					.exchange(new RequestEntity(request, HttpMethod.POST, URI.create("http://localhost:9092/orders")), OrderResponse.class);
 		});
