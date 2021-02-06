@@ -1,0 +1,71 @@
+spring:
+  application:
+    name: order-service
+server:
+  port: 9092
+
+#resilience4j:
+#  circuitbreaker:
+#    instances:
+#      inventoryBreak:
+#        registerHealthIndicator: true # added actuator dependency to pom.xml, should gives permission
+#        automaticTransitionFromOpenToHalfOpenEnabled: true
+#        failureRateThreshold: 50
+#        minimumNumberOfCalls: 5
+#        permittedNumberOfCallsInHalfOpenState: 3
+#        slidingWindowSize: 10
+#        waitDurationInOpenState: 10s
+#        slidingWindowType: COUNT_BASED
+#        recordExceptions:
+#          - org.springframework.web.client.HttpServerErrorException
+#          - java.io.IOException
+#          - java.util.concurrent.TimeoutException
+#          - org.springframework.web.client.ResourceAccessException
+
+management:
+  health:
+    ratelimiters:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: ALWAYS
+
+#management.endpoints.web.exposure.include: '*'
+#management.endpoint.health.show-details: always
+#management.health.circuitbreakers.enabled: true
+
+#resilience4j:
+#  circuitbreaker:
+#    instances:
+#      inventoryBreak:
+#        registerHealthIndicator: true # added actuator dependency to pom.xml, should gives permission
+#        automaticTransitionFromOpenToHalfOpenEnabled: true
+#        ringBufferSizeInClosedState: 5
+#        ringBufferSizeInHalfOpenState: 3
+#        waitDurationInOpenState: 100s
+#        failureRateThreshold: 50
+#        recordExceptions:
+#          - org.springframework.web.client.HttpServerErrorException
+#          - java.io.IOException
+#          - java.util.concurrent.TimeoutException
+#          - org.springframework.web.client.ResourceAccessException
+
+resilience4j:
+  ratelimiter:
+    instances:
+      inventoryBreak:
+        limitForPeriod: 10
+        limitRefreshPeriod: 100000
+        timeoutDuration: 1000ms
+
+
+app:
+  inventory-endpoint: http://localhost:9093/inventories
+
+
+
+
